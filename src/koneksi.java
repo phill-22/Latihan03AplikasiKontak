@@ -19,7 +19,6 @@ public class koneksi {
             try {
                 return DriverManager.getConnection(URL);
             } catch (SQLException e) {
-                e.printStackTrace();
                 return null;
             }
         }
@@ -27,7 +26,6 @@ public class koneksi {
             try {
                 if (conn != null) conn.close();
             } catch (SQLException e) {
-                e.printStackTrace();
             }
         }
     

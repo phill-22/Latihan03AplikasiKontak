@@ -4,6 +4,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -21,6 +23,7 @@ public class AplikasiKontak extends javax.swing.JFrame {
      */
     public AplikasiKontak() {
         initComponents();
+        
     }
 
     /**
@@ -49,7 +52,7 @@ public class AplikasiKontak extends javax.swing.JFrame {
         ImportButton = new javax.swing.JButton();
         EksportButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        KontakTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -134,7 +137,7 @@ public class AplikasiKontak extends javax.swing.JFrame {
         gridBagConstraints.gridy = 7;
         jPanel1.add(EksportButton, gridBagConstraints);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        KontakTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -145,7 +148,7 @@ public class AplikasiKontak extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(KontakTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -159,29 +162,49 @@ public class AplikasiKontak extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+        
+        
     private void TambahButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TambahButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TambahButtonActionPerformed
 
-    public  class database{
-        private static final String URL = "jdbc:sqlite:kontak.db";
+
+   
+        private void tambah(String nama,String nomor,String kategori){
         
-        public static Connection konek(){
-            try {
-                return DriverManager.getConnection(URL);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
+        String sql = "INSERT INTO kontak (nama,telepon,kategori) VALUES (?,?,?)";
+        
+            try (Connection conn = DatabaseHelper.konek();
+                    PreparedStatement input = conn.prepareStatement(sql)) {
+                    
+                    input.setString(1, nama);
+                    input.setString(2, nomor);
+                    input.setString(3, kategori);
+                    input.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Kontak Berhasil ditambahkan");
+            } catch (Exception e) {
             }
         }
-        public static void tutup(Connection conn){
-            try {
-                if (conn != null) conn.close();
+        
+        private void tampil(){
+            String sql = "SELECT * FROM kontak";
+            DefaultTableModel model = (DefaultTableModel) KontakTable.getModel();
+            model.setRowCount(0);
+            try(Connection conn = DatabaseHelper.connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql); 
+                    ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("id"),
+                    rs.getString("nama"),
+                    rs.getString("nomor"),
+                    rs.getString("kategori")});
+                }
             } catch (SQLException e) {
-                e.printStackTrace();
+               JOptionPane.showMessageDialog(null, "gagal memuat data : "+e.getMessage());
             }
         }
-    }
     
     /**
      * @param args the command line arguments
@@ -224,6 +247,7 @@ public class AplikasiKontak extends javax.swing.JFrame {
     private javax.swing.JButton EksportButton;
     private javax.swing.JButton HapusButton;
     private javax.swing.JButton ImportButton;
+    private javax.swing.JTable KontakTable;
     private javax.swing.JButton TambahButton;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -233,7 +257,6 @@ public class AplikasiKontak extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
