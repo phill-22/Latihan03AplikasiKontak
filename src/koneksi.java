@@ -2,6 +2,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -13,20 +14,21 @@ import java.sql.SQLException;
  * @author ASUS ROG
  */
 public class koneksi {
-        private static final String URL = "jdbc:sqlite:kontak.db";
-        
-        public static Connection konek(){
-            try {
-                return DriverManager.getConnection(URL);
-            } catch (SQLException e) {
-                return null;
-            }
-        }
-        public static void tutup(Connection conn){
-            try {
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-            }
+      private static Connection mysqlkoneksi;
+    public static Connection koneksiDB() throws SQLException{
+            if (mysqlkoneksi==null) {
+                try {
+                   String DB="jdbc:mysql://localhost:3306/kontak";
+                    String user="root";
+                    String pass="";
+                    DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+                mysqlkoneksi=(Connection) DriverManager.getConnection(DB,user,pass);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "koneksi gagal");
+                }
+                    
+            } return mysqlkoneksi;
+            
         }
     
 }

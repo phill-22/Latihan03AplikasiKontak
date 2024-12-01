@@ -1,9 +1,10 @@
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,6 +24,7 @@ public class AplikasiKontak extends javax.swing.JFrame {
      */
     public AplikasiKontak() {
         initComponents();
+        tampil();
         
     }
 
@@ -34,7 +36,6 @@ public class AplikasiKontak extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -43,8 +44,8 @@ public class AplikasiKontak extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        noTextField = new javax.swing.JTextField();
+        namaTextField = new javax.swing.JTextField();
         TambahButton = new javax.swing.JButton();
         EditButton = new javax.swing.JButton();
         HapusButton = new javax.swing.JButton();
@@ -53,48 +54,33 @@ public class AplikasiKontak extends javax.swing.JFrame {
         EksportButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         KontakTable = new javax.swing.JTable();
+        cariTextField = new javax.swing.JTextField();
+        keluarButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jLabel1.setText("aplikasi pegelola kontak");
         jPanel2.add(jLabel1);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        jPanel1.setLayout(new java.awt.GridBagLayout());
-
         jLabel2.setText("Maukkan Nama :");
-        jPanel1.add(jLabel2, new java.awt.GridBagConstraints());
 
         jLabel3.setText("Nomor Telepon :");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        jPanel1.add(jLabel3, gridBagConstraints);
 
         jLabel4.setText("Kategori :");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        jPanel1.add(jLabel4, gridBagConstraints);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        jPanel1.add(jComboBox1, gridBagConstraints);
-
-        jTextField1.setText("jTextField1");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        jPanel1.add(jTextField1, gridBagConstraints);
-
-        jTextField2.setText("jTextField2");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        jPanel1.add(jTextField2, gridBagConstraints);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kategori", "Keluarga", "Teman", "Kerja" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         TambahButton.setText("Tambah");
         TambahButton.addActionListener(new java.awt.event.ActionListener() {
@@ -102,40 +88,36 @@ public class AplikasiKontak extends javax.swing.JFrame {
                 TambahButtonActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        jPanel1.add(TambahButton, gridBagConstraints);
 
         EditButton.setText("Edit");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        jPanel1.add(EditButton, gridBagConstraints);
+        EditButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditButtonActionPerformed(evt);
+            }
+        });
 
         HapusButton.setText("Hapus");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        jPanel1.add(HapusButton, gridBagConstraints);
+        HapusButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HapusButtonActionPerformed(evt);
+            }
+        });
 
         CariButton.setText("Cari");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
-        jPanel1.add(CariButton, gridBagConstraints);
+        CariButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CariButtonActionPerformed(evt);
+            }
+        });
 
         ImportButton.setText("Import");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        jPanel1.add(ImportButton, gridBagConstraints);
 
         EksportButton.setText("Eksport");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        jPanel1.add(EksportButton, gridBagConstraints);
+        EksportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EksportButtonActionPerformed(evt);
+            }
+        });
 
         KontakTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -150,12 +132,92 @@ public class AplikasiKontak extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(KontakTable);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        jPanel1.add(jScrollPane1, gridBagConstraints);
+        keluarButton.setText("Keluar");
+        keluarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keluarButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(CariButton)
+                        .addGap(27, 27, 27)
+                        .addComponent(cariTextField))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(105, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(TambahButton)
+                                .addGap(6, 6, 6)
+                                .addComponent(EditButton)
+                                .addComponent(HapusButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(keluarButton))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(namaTextField)
+                                    .addComponent(noTextField)
+                                    .addComponent(jComboBox1, 0, 203, Short.MAX_VALUE))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(ImportButton)
+                        .addGap(29, 29, 29)
+                        .addComponent(EksportButton)))
+                .addGap(69, 69, 69))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ImportButton)
+                    .addComponent(EksportButton))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(namaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(noTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TambahButton)
+                    .addComponent(EditButton)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(HapusButton)
+                        .addComponent(keluarButton)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CariButton)
+                    .addComponent(cariTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(85, Short.MAX_VALUE))
+        );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -167,15 +229,134 @@ public class AplikasiKontak extends javax.swing.JFrame {
         
     private void TambahButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TambahButtonActionPerformed
         // TODO add your handling code here:
+        try {
+            String sql = "insert into data_kontak (nama, nomor_telpon,kategori) values('"
+                    +namaTextField.getText()+"','"
+                    +noTextField.getText()+"','"
+                    +jComboBox1.getSelectedItem()+"')";
+                 java.sql.Connection conn=(java.sql.Connection) koneksi.koneksiDB();
+                 java.sql.PreparedStatement pst= conn.prepareStatement(sql);
+                 pst.execute();
+                 JOptionPane.showMessageDialog(null, "Data Berhasil disimpan");
+                 tampil();
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(null, "Data Gagal disimpan");
+            System.out.println(e.getMessage());
+
+        }
     }//GEN-LAST:event_TambahButtonActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowActivated
+
+    private void EditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+            String sql = "UPDATE data_kontak SET nomor_telpon=?,  Kategori=? WHERE nama=?";
+             if (namaTextField.getText().isEmpty() || noTextField.getText().isEmpty() ) {
+                JOptionPane.showMessageDialog(null, "Harap lengkapi semua data!");
+                return;
+            }
+            
+            java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+            
+            pst.setString(1, noTextField.getText());
+            pst.setString(2, jComboBox1.getSelectedItem().toString()); // Kategori
+            pst.setString(3, namaTextField.getText());
+            
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "Data Berhasil Diperbarui");
+            tampil();
+ 
+            //mengatur nilai
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Data gagal diperbarui"+e.getMessage());
+        }
+    }//GEN-LAST:event_EditButtonActionPerformed
+
+    private void HapusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HapusButtonActionPerformed
+        // TODO add your handling code here:
+         try {
+            java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+            String sql = "delete from data_kontak where "+namaTextField.getText()+"'";
+            java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null,"Data berhasil di hapus");
+            tampil();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Data tidak berhasil di hapus");
+            System.out.println("e.getMessage()");
+        }
+    }//GEN-LAST:event_HapusButtonActionPerformed
+
+    private void keluarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keluarButtonActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_keluarButtonActionPerformed
+
+    private void CariButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CariButtonActionPerformed
+        // TODO add your handling code here:
+         try {
+            java.sql.Connection conn=(java.sql.Connection)koneksi.koneksiDB();
+            String sql = "select * from data_kontak where nama= '"+cariTextField.getText()+"' or nomor_telpon= '"+cariTextField.getText()+"'";
+            java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery(sql);
+            if (rs.next()) {
+                namaTextField.setText(rs.getNString(2));
+                noTextField.setText(rs.getNString(3));
+                jComboBox1.setSelectedItem(rs.getString(4));
+                JOptionPane.showMessageDialog(null, "Data Kontak " +cariTextField.getText()+" Ditemukan");
+                tampil();
+            }
+        } catch (Exception e) {
+            cariTextField.requestFocus();
+        }
+    }//GEN-LAST:event_CariButtonActionPerformed
+
+    private void EksportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EksportButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser file = new JFileChooser();
+         int returnValue = file.showSaveDialog(this);
+         
+         if (returnValue == JFileChooser.APPROVE_OPTION) {
+             String filePath = file.getSelectedFile().getAbsolutePath();
+             
+             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                 writer.write("id,nama,nomor_Telepon,kategori\n"); // Header CSV
+                java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+                String sql = "SELECT * FROM data_kontak";
+                java.sql.PreparedStatement pst= conn.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery(sql);
+                writer.write("nama\t,nomor_telepon\t,kategori\n");
+                while (rs.next()) {
+                    writer.write(
+                            rs.getString(2) + "\t" +
+                            rs.getString(3) + "\t" +
+                            rs.getString(4) + "\n" 
+                    );
+                }
+                
+                 
+             } catch (Exception e) {
+                 JOptionPane.showMessageDialog(null, "data"+filePath+"sukses");
+             }
+            
+        }
+    }//GEN-LAST:event_EksportButtonActionPerformed
 
 
    
         private void tambah(String nama,String nomor,String kategori){
         
-        String sql = "INSERT INTO kontak (nama,telepon,kategori) VALUES (?,?,?)";
+        String sql = "INSERT INTO data_kontak (nama,telepon,kategori) VALUES (?,?,?)";
         
-            try (Connection conn = DatabaseHelper.konek();
+            try (Connection conn = koneksi.koneksiDB();
                     PreparedStatement input = conn.prepareStatement(sql)) {
                     
                     input.setString(1, nama);
@@ -188,22 +369,26 @@ public class AplikasiKontak extends javax.swing.JFrame {
         }
         
         private void tampil(){
-            String sql = "SELECT * FROM kontak";
-            DefaultTableModel model = (DefaultTableModel) KontakTable.getModel();
-            model.setRowCount(0);
-            try(Connection conn = DatabaseHelper.connect();
-         PreparedStatement pstmt = conn.prepareStatement(sql); 
-                    ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                model.addRow(new Object[]{
-                    rs.getInt("id"),
-                    rs.getString("nama"),
-                    rs.getString("nomor"),
-                    rs.getString("kategori")});
+            try {
+            DefaultTableModel tabel = new DefaultTableModel();
+        tabel.addColumn("Nama");
+        tabel.addColumn("Nomor Telepon");
+        tabel.addColumn("Kategori");
+            java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+            String sql = "SELECT * FROM data_kontak";
+            java.sql.PreparedStatement pst= conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery(sql);
+                while (rs.next()){
+                    tabel.addRow(new Object[]{
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4)
+                    });
+                    KontakTable.setModel(tabel);
                 }
-            } catch (SQLException e) {
-               JOptionPane.showMessageDialog(null, "gagal memuat data : "+e.getMessage());
-            }
+        } catch (Exception e) {
+            System.out.println("error : "+ e.getMessage());
+        }
         }
     
     /**
@@ -249,6 +434,7 @@ public class AplikasiKontak extends javax.swing.JFrame {
     private javax.swing.JButton ImportButton;
     private javax.swing.JTable KontakTable;
     private javax.swing.JButton TambahButton;
+    private javax.swing.JTextField cariTextField;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -257,7 +443,8 @@ public class AplikasiKontak extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton keluarButton;
+    private javax.swing.JTextField namaTextField;
+    private javax.swing.JTextField noTextField;
     // End of variables declaration//GEN-END:variables
 }
